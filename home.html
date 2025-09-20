@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- <link rel="stylesheet" href="homestyle.css" /> -->
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="home.js" defer></script>
+  </head>
+  <body>
+    <div class="logo"></div>
+    <header class="header">
+      <div class="logo">
+        <img src="logo.png" alt="logo" /> מערכת ניהול משמרות
+      </div>
+      <nav class="nav-menu">
+        <a href="home.html" class="active">Shifts</a>
+        <a href="profile-update.html">Edit profile</a>
+        <a href="add-update-shift.html">Add shift</a>
+        <a href="resume-update.html">Resume</a>
+      </nav>
+      <div class="user-info">
+        <span id="greet">Hello, Guest!</span>
+        <button class="btn btn-danger" id="logout" style="display: none">
+          logout
+        </button>
+        <button class="btn btn-secondary" onclick="showLogin()" id="login-btn">
+          התחבר
+        </button>
+      </div>
+    </header>
+       <div class="container">
+      <!-- Home Page - Shifts -->
+      <div id="home" class="page active">
+        <h2>ניהול משמרות</h2>
+
+        <div id="guest-notice" class="guest-notice">
+          אורח יקר, עליך להתחבר כדי לצפות במשמרות ולנהל אותן.
+        </div>
+
+        <div id="shifts-content" style="display: none">
+          <div class="filter-section">
+            <h3>סינון משמרות</h3>
+            <div class="filter-row">
+              <div class="form-group">
+                <label for="filter-branch">סניף:</label>
+                <select id="filter-branch">
+                  <option value="">כל הסניפים</option>
+                  <option value="תל אביב">תל אביב</option>
+                  <option value="ירושלים">ירושלים</option>
+                  <option value="חיפה">חיפה</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="filter-position">תפקיד:</label>
+                <select id="filter-position">
+                  <option value="">כל התפקידים</option>
+                  <option value="קופאי">קופאי</option>
+                  <option value="מוכר">מוכר</option>
+                  <option value="מנהל משמרת">מנהל משמרת</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary" onclick="filterShifts()">
+                  סנן
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-success" id="success-alert"></div>
+          <div class="alert alert-danger" id="error-alert"></div>
+
+          <table class="shifts-table" id="shifts-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>שעת התחלה</th>
+                <th>שעת סיום</th>
+                <th>שכר שעתי</th>
+                <th>תפקיד</th>
+                <th>סניף</th>
+                <th>שכר כולל למשמרת</th>
+                <th>פעולות</th>
+              </tr>
+            </thead>
+            <tbody id="shifts-tbody"></tbody>
+          </table>
+
+          <div class="total-salary" id="total-salary">שכר כולל: ₪0</div>
+
+          <button
+            class="btn btn-primary add-shift-btn"
+            onclick="showPage('add-shift')"
+          >
+            הוספת משמרת חדשה
+          </button>
+        </div>
+      </div>
+
+
+
+     <div id="register-modal" class="modal">
+      <div class="modal-content">
+       
+      </div>
+    </div>
+    
+<!-- 
+    <form id="filterForm">
+      <label
+        >Location:
+        <select type="text" id="fltloc" placeholder="Enter name">
+          <option value="TA">TA</option>
+        </select>
+      </label>
+      <label
+        >Job:
+        <input type="text" id="fltjob" placeholder="Enter job title" />
+      </label>
+      <button type="submit">Filter</button>
+    </form>
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Salery Per Hour</th>
+        <th>Job Title</th>
+        <th>Location</th>
+        <th>Salery Per Shift</th>
+        <th>Delete</th>
+        <th>Update</th>
+      </tr>
+    </table>
+
+    <p>Salery For Selected Shifts:</p>
+
+    <button onclick="" type="submit" class="add-update-shift">
+      Add or update shifts
+    </button> -->
+  </body>
+</html>

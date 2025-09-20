@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Manage My Shifts|Login</title>
+    <!-- <link rel="stylesheet" href="loginstyle.css"> -->
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="login.js" defer></script>
+  </head>
+  <body>
+    <div class="ctr">
+      <h2>התחברות</h2>
+      <p>נא למלא את הטופס כדי להתחבר לחשבון שלך.</p>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">שם משתמש:</label>
+          <input
+            type="text"
+            id="username"
+            required
+            placeholder="הזן שם משתמש"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">סיסמה:</label>
+          <input
+            type="password"
+            id="password"
+            required
+            placeholder="הזן סיסמה"
+          />
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="login()">
+          התחבר
+        </button>
+        <button type="button" class="btn btn-secondary" id="register-btn">
+          להרשמה לחץ כאן
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

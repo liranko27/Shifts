@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- <link rel="stylesheet" href="homestyle.css" /> -->
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="add-update-shift.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <img src="logo.png" alt="logo" /> מערכת ניהול משמרות
+      </div>
+      <nav class="nav-menu">
+        <a href="home.html" class="active">Shifts</a>
+        <a href="profile-update.html">Edit profile</a>
+        <a href="add-update-shift.html">Add shift</a>
+        <a href="resume-update.html">Resume</a>
+      </nav>
+      <div class="user-info">
+        <span id="greet">Hello, Guest!</span>
+        <button class="btn btn-danger" id="logout" style="display: none">
+          logout
+        </button>
+        <button class="btn btn-secondary" onclick="showLogin()" id="login-btn">
+          התחבר
+        </button>
+      </div>
+    </header>
+
+    <div id="add-shift" class="page">
+      <h2 id="shift-form-title">הוספת משמרת חדשה</h2>
+      <p class="page-description">נא למלא את כל השדות ליצירת משמרת חדשה.</p>
+
+      <div class="alert alert-danger" id="shift-error-alert"></div>
+
+      <form id="shift-form">
+        <div class="form-group">
+          <label for="shift-date">תאריך התחלה:</label>
+          <input type="date" id="shift-date" required />
+        </div>
+
+        <div class="form-group">
+          <label for="start-time">שעת התחלה:</label>
+          <input type="time" id="start-time" required />
+        </div>
+
+        <div class="form-group">
+          <label for="end-time">שעת סיום:</label>
+          <input type="time" id="end-time" required />
+        </div>
+
+        <div class="form-group">
+          <label for="hourly-rate">שכר שעתי (₪):</label>
+          <input
+            type="number"
+            id="hourly-rate"
+            min="0"
+            step="0.01"
+            required
+            placeholder="הזן שכר שעתי"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="position">תפקיד:</label>
+          <input
+            type="text"
+            id="position"
+            required
+            minlength="1"
+            placeholder="הזן תפקיד"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="branch">סניף:</label>
+          <select id="branch" required>
+            <option value="">בחר סניף</option>
+            <option value="תל אביב">תל אביב</option>
+            <option value="ירושלים">ירושלים</option>
+            <option value="חיפה">חיפה</option>
+          </select>
+        </div>
+
+        <div class="form-buttons">
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="handleShiftSubmit()"
+          >
+            שמור משמרת
+          </button>
+          <button
+            type="button"
+            class="btn btn-warning"
+            onclick="cancelShiftForm()"
+          >
+            ביטול
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- 
+    <h2>Shift Input</h2>
+
+    <form id="shiftForm">
+      <label
+        >Date:
+        <input type="date" id="date" required />
+      </label>
+
+      <label
+        >Start Time:
+        <input type="time" id="startTime" required />
+      </label>
+
+      <label
+        >End Time:
+        <input type="time" id="endTime" required />
+      </label>
+
+      <label
+        >Salery Per Hour:
+        <input type="number" id="hourlyWage" min="0" step="0.01" required />
+      </label>
+
+      <label
+        >Job Title:
+        <input type="text" id="role" required />
+      </label>
+
+      <label
+        >Location
+        <input type="text" id="branch" required />
+      </label>
+
+      <button type="submit">Add Shift</button>
+    </form> -->
+  </body>
+</html>

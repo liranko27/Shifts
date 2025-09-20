@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>מערכת ניהול משמרות</title>
+    <style></style>
+  </head>
+  <body>
+    <!-- Add/Update Shift Page -->
+
+    <!-- Profile Page -->
+
+    <!-- Login Modal -->
+
+    <!-- Register Modal -->
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+      <div class="modal-content">
+        <h3>אישור מחיקה</h3>
+        <p>האם אתה בטוח שברצונך למחוק את המשמרת?</p>
+        <div class="modal-buttons">
+          <button class="btn btn-danger" onclick="confirmDelete()">מחק</button>
+          <button class="btn btn-warning" onclick="closeDeleteModal()">
+            ביטול
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Global variables
+      let currentUser = null;
+      let shifts = [];
+      let currentShiftId = null;
+      let deleteShiftId = null;
+
+      // Sample data
+      const sampleShifts = [
+        {
+          id: 1,
+          date: "2024-01-15",
+          startTime: "08:00",
+          endTime: "16:00",
+          hourlyRate: 35,
+          position: "קופאי",
+          branch: "תל אביב",
+        },
+        {
+          id: 2,
+          date: "2024-01-16",
+          startTime: "14:00",
+          endTime: "22:00",
+          hourlyRate: 40,
+          position: "מנהל משמרת",
+          branch: "חיפה",
+        },
+      ];
+
+      // Initialize app
+      document.addEventListener("DOMContentLoaded", function () {
+        updateUI();
+
+        // Add form submit handlers
+        document
+          .getElementById("shift-form")
+          .addEventListener("submit", handleShiftSubmit);
+        document
+          .getElementById("login-form")
+          .addEventListener("submit", handleLogin);
+        document
+          .getElementById("register-form")
+          .addEventListener("submit", handleRegister);
+      });
+
+      function showPage(pageId) {
+        // Hide all pages
+        const pages = document.querySelectorAll(".page");
+        pages.forEach((page) => page.classList.remove("active"));
+
+        // Show selected page
+        document.getElementById(pageId).classList.add("active");
+
+        // Update nav active state
+        const navLinks = document.querySelectorAll(".nav-menu a");
+        navLinks.forEach((link) => link.classList.remove("active"));
+        event.target.classList.add("active");
+
+        // Check authentication for protected pages
+        if (
+          !currentUser &&
+          (pageId === "add-shift" ||
+            pageId === "profile" ||
+            pageId === "resume")
+        ) {
+          showAlert("error-alert", "עליך להתחבר כדי לגשת לעמוד זה");
+          showPage("home");
+          return;
+        }
+      }
+
+      function updateUI() {
+        const userGreeting = document.getElementById("user-greeting");
+        const loginBtn = document.getElementById("login-btn");
+        const logoutBtn = document.getElementById("logout-btn");
+        const guestNotice = document.getElementById("guest-notice");
+        const shiftsContent = document.getElementById("shifts-content");
+
+        if (currentUser) {
+          userGreeting.textContent = `שלום, ${currentUser}!`;
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "block";
+          guestNotice.style.display = "none";
+          shiftsContent.style.display = "block";
+          loadShifts();
+        } else {
+          userGreeting.textContent = "שלום, אורח!";
+          loginBtn.style.display = "block";
+          logoutBtn.style.display = "none";
+          guestNotice.style.display = "block";
+          shiftsContent.style.display = "none";
+        }
+      }
+
+      function handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Simple authentication (in real app, this would be server-side)
+        if (username && password) {
+          currentUser = username;
+          shifts = [...sampleShifts]; // Load sample data for logged-in user
+          updateUI();
+          closeLogin();
+          showAlert("success-alert", "התחברת בהצלחה!");
+        } else {
+          showAlert("error-alert", "נא למלא את כל השדות");
+        }
+      }
+
+      function handleRegister(e) {
+        e.preventDefault();
+        const username = document.getElementById("reg-username").value;
+        const email = document.getElementById("reg-email").value;
+        const password = document.getElementById("reg-password").value;
+        const repeatPassword = document.getElementById(
+          "reg-repeat-password"
+        ).value;
+        const firstname = document.getElementById("reg-firstname").value;
+        const lastname = document.getElementById("reg-lastname").value;
+        const age = document.getElementById("reg-age").value;
+
+        // Validation
+        if (
+          !username ||
+          !email ||
+          !password ||
+          !repeatPassword ||
+          !firstname ||
+          !lastname ||
+          !age
+        ) {
+          alert("נא למלא את כל השדות");
+          return;
+        }
+
+        if (password !== repeatPassword) {
+          alert("הסיסמאות אינן תואמות");
+          return;
+        }
+
+        if (age < 16 || age > 120) {
+          alert("גיל לא תקין");
+          return;
+        }
+
+        // Simple registration (in real app, this would be server-side)
+        currentUser = username;
+        shifts = []; // New user starts with empty shifts
+        updateUI();
+        closeRegister();
+        showAlert("success-alert", "נרשמת בהצלחה!");
+      }
+
+      function logout() {
+        currentUser = null;
+        shifts = [];
+        updateUI();
+        showPage("home");
+        showAlert("success-alert", "התנתקת בהצלחה!");
+      }
+
+      function loadShifts() {
+        renderShifts(shifts);
+        calculateTotalSalary();
+      }
+
+      function calculateShiftSalary(shift) {
+        const start = new Date(`2000-01-01T${shift.startTime}:00`);
+        const end = new Date(`2000-01-01T${shift.endTime}:00`);
+
+        // Handle shifts that end the next day
+        if (end < start) {
+          end.setDate(end.getDate() + 1);
+        }
+
+        const hours = (end - start) / (1000 * 60 * 60);
+        return hours * shift.hourlyRate;
+      }
+
+      function calculateTotalSalary() {
+        const total = shifts.reduce(
+          (sum, shift) => sum + calculateShiftSalary(shift),
+          0
+        );
+        document.getElementById(
+          "total-salary"
+        ).textContent = ` שכר כולל: ₪${total.toFixed(2)}`;
+      }
+      function handleShiftSubmit(e) {
+        e.preventDefault();
+        const date = document.getElementById("shift-date").value;
+        const startTime = document.getElementById("start-time").value;
+        const endTime = document.getElementById("end-time").value;
+        const hourlyRate = parseFloat(
+          document.getElementById("hourly-rate").value
+        );
+        const position = document.getElementById("position").value;
+        const branch = document.getElementById("branch").value;
+
+        // Validation
+        if (
+          !date ||
+          !startTime ||
+          !endTime ||
+          isNaN(hourlyRate) ||
+          !position ||
+          !branch
+        ) {
+          showAlert("shift-error-alert", "נא למלא את כל השדות");
+          return;
+        }
+
+        if (hourlyRate < 0) {
+          showAlert("shift-error-alert", "שכר שעתי לא תקין");
+          return;
+        }
+
+        if (
+          new Date(
+            `2000-01-01T${endTime}:00) <= new Date(2000-01-01T${startTime}:00`
+          )
+        ) {
+          showAlert("shift-error-alert", "שעת סיום חייבת להיות אחרי שעת התחלה");
+          return;
+        }
+
+        if (currentShiftId) {
+          // Update existing shift
+          const shiftIndex = shifts.findIndex((s) => s.id === currentShiftId);
+          if (shiftIndex !== -1) {
+            shifts[shiftIndex] = {
+              id: currentShiftId,
+              date,
+              startTime,
+              endTime,
+              hourlyRate,
+              position,
+              branch,
+            };
+            showAlert("success-alert", "המשמרת עודכנה בהצלחה!");
+          }
+        } else {
+          // Add new shift
+          const newShift = {
+            id: shifts.length ? Math.max(...shifts.map((s) => s.id)) + 1 : 1,
+            date,
+            startTime,
+            endTime,
+            hourlyRate,
+            position,
+            branch,
+          };
+          shifts.push(newShift);
+          showAlert("success-alert", "המשמרת נוספה בהצלחה!");
+        }
+
+        // Reset form and state
+        currentShiftId = null;
+        document.getElementById("shift-form").reset();
+        document.getElementById("shift-form-title").textContent =
+          "הוספת משמרת חדשה";
+        loadShifts();
+        showPage("home");
+      }
+      function editShift(shiftId) {
+        const shift = shifts.find((s) => s.id === shiftId);
+        if (shift) {
+          currentShiftId = shiftId;
+          document.getElementById("shift-date").value = shift.date;
+          document.getElementById("start-time").value = shift.startTime;
+          document.getElementById("end-time").value = shift.endTime;
+          document.getElementById("hourly-rate").value = shift.hourlyRate;
+          document.getElementById("position").value = shift.position;
+          document.getElementById("branch").value = shift.branch;
+          document.getElementById("shift-form-title").textContent =
+            "עדכון משמרת";
+          showPage("add-shift");
+        }
+      }
+      function cancelShiftForm() {
+        currentShiftId = null;
+        document.getElementById("shift-form").reset();
+        document.getElementById("shift-form-title").textContent =
+          "הוספת משמרת חדשה";
+        showPage("home");
+      }
+      function showDeleteModal(shiftId) {
+        deleteShiftId = shiftId;
+        document.getElementById("delete-modal").style.display = "block";
+      }
+      function closeDeleteModal() {
+        deleteShiftId = null;
+        document.getElementById("delete-modal").style.display = "none";
+      }
+      function confirmDelete() {
+        if (deleteShiftId !== null) {
+          shifts = shifts.filter((s) => s.id !== deleteShiftId);
+          showAlert("success-alert", "המשמרת נמחקה בהצלחה!");
+          loadShifts();
+          closeDeleteModal();
+        }
+      }
+      function filterShifts() {
+        const branch = document.getElementById("filter-branch").value;
+        const position = document.getElementById("filter-position").value;
+
+        let filteredShifts = [...shifts];
+
+        if (branch) {
+          filteredShifts = filteredShifts.filter((s) => s.branch === branch);
+        }
+
+        if (position) {
+          filteredShifts = filteredShifts.filter(
+            (s) => s.position === position
+          );
+        }
+
+        renderShifts(filteredShifts);
+        calculateTotalSalary();
+      }
+      function showAlert(alertId, message) {
+        const alertBox = document.getElementById(alertId);
+        alertBox.textContent = message;
+        alertBox.style.display = "block";
+        setTimeout(() => {
+          alertBox.style.display = "none";
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

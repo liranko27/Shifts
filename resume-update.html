@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- <link rel="stylesheet" href="homestyle.css" /> -->
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <img src="logo.png" alt="logo" /> מערכת ניהול משמרות
+      </div>
+      <nav class="nav-menu">
+        <a href="home.html" class="active">Shifts</a>
+        <a href="profile-update.html">Edit profile</a>
+        <a href="add-update-shift.html">Add shift</a>
+        <a href="resume-update.html">Resume</a>
+      </nav>
+      <div class="user-info">
+        <span id="greet">Hello, Guest!</span>
+        <button class="btn btn-danger" id="logout" style="display: none">
+          logout
+        </button>
+        <button class="btn btn-secondary" onclick="showLogin()" id="login-btn">
+          התחבר
+        </button>
+      </div>
+    </header>
+    <div class="container">
+      <h1>Update Resume</h1>
+
+      <fieldset>
+        <legend>Education</legend>
+        <label
+          >Year of Start:
+          <input type="number" id="eduStart" min="1900" max="2100" required />
+        </label>
+
+        <label
+          >Year of End:
+          <input type="number" id="eduEnd" min="1900" max="2100" />
+        </label>
+
+        <label
+          >Institution Name:
+          <input type="text" id="eduInstitution" required />
+        </label>
+
+        <label
+          >Degree:
+          <input type="text" id="eduDegree" />
+        </label>
+
+        <label>
+          Description:
+          <textarea id="eduDescription" rows="3"></textarea>
+        </label>
+
+        <button type="button" onclick="">Save</button>
+      </fieldset>
+      <fieldset>
+        <legend>Employment Experience</legend>
+        <label
+          >Year of Start:
+          <input type="number" id="expStart" min="1900" max="2100" required />
+        </label>
+
+        <label
+          >Year of End:
+          <input type="number" id="expEnd" min="1900" max="2100" />
+        </label>
+
+        <label
+          >Employer Name:
+          <input type="text" id="expEmployer" required />
+        </label>
+
+        <label
+          >Job Title:
+          <input type="text" id="expRole" />
+        </label>
+
+        <label>
+          Description:
+          <textarea id="expDescription" rows="3"></textarea>
+        </label>
+
+        <button type="button" onclick="">Save</button>
+      </fieldset>
+    </div>
+  </body>
+</html>

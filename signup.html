@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="registerStyle.css" /> -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage My Shifts|Register</title>
+    <script src="signup.js" defer></script>
+  </head>
+  <body>
+    <div class="ctr">
+      <h2>הרשמה</h2>
+      <p>נא למלא את הטופס כדי ליצור חשבון.</p>
+      <form id="register-form">
+        <div class="form-group">
+          <label for="uname">שם משתמש:</label>
+          <input type="text" id="uname" required placeholder="הזן שם משתמש" />
+        </div>
+        <div class="form-group">
+          <label for="email">אימייל:</label>
+          <input type="email" id="email" required placeholder="הזן אימייל" />
+        </div>
+        <div class="form-group">
+          <label for="psw">סיסמה:</label>
+          <input type="password" id="psw" required placeholder="הזן סיסמה" />
+        </div>
+        <div class="form-group">
+          <label for="psw-repeat">חזור על הסיסמה:</label>
+          <input
+            type="password"
+            id="psw-repeat"
+            required
+            placeholder="חזור על הסיסמה"
+          />
+        </div>
+        <div class="form-group">
+          <label for="fname">שם פרטי:</label>
+          <input type="text" id="fname" required placeholder="הזן שם פרטי" />
+        </div>
+        <div class="form-group">
+          <label for="lname">שם משפחה:</label>
+          <input type="text" id="lname" required placeholder="הזן שם משפחה" />
+        </div>
+        <div class="form-group">
+          <label for="age">גיל:</label>
+          <input
+            type="number"
+            id="age"
+            required
+            min="16"
+            max="120"
+            placeholder="הזן גיל"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary registerbtn">הרשמה</button>
+
+        <button type="button" class="btn btn-secondary" onclick="showLogin()">
+          יש לך כבר חשבון? התחבר
+        </button>
+      </form>
+    </div>
+    <!-- <form >
+  <div class="container">
+    <h1>Register</h1>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+    <label for="uname"><b>User Name</b></label>
+    <input type="text" placeholder="Enter User Name" id="uname" required>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" id="email" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id="psw" required>
+
+    <label for="psw-repeat"><b>Repeat Password</b></label>
+    <input type="password" placeholder="Repeat Password" id="psw-repeat" required>
+    <lable for="fname"><b>First Name</b></lable>
+    <input type="text" placeholder="Enter First Name" id="fname" required>
+    <lable for="lname"><b>Last Name</b></lable>
+    <input type="text" placeholder="Enter Last Name" id="lname" required>
+    <lable for="age"><b>Age</b></lable>
+    <input type="number" placeholder="Enter Age" id="age" required>
+    <hr>
+    <button type="submit" class="registerbtn">Register</button>
+  </div>
+
+  <div class="container signin">
+    <p>Already have an account? <a href="login.html">Sign in</a>.</p>
+  </div>
+</form> -->
+  </body>
+</html>
